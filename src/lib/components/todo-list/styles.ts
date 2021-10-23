@@ -80,5 +80,10 @@ export const styles = [
       font-size: 30px;
       margin-top: 30px;
     }
+    .clean-btn {
+      background-color: #bb2124;
+      align-self: flex-end;
+      margin-top: 20px;
+    }
   `,
 ];

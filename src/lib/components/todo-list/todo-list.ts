@@ -31,32 +31,47 @@ export class ToDoList extends LitElement {
           )}
         </ul>`
       : html`<span class="empty-tasks">Aún no hay tareas...</span>`}`;
-    return html` <div class="todo-list-container">
-      <div class="todo-title">
-        <h1>tasKs</h1>
-        <button
-          @click=${this.createTask}
-          ?disabled="${this.showCreateTaskForm}"
+
+    const showCleanButton =
+      this.listItems.length > 0
+        ? html`<button class="clean-btn" @click=${this.cleanTasks}>
+            Borrar tareas
+          </button>`
+        : "";
+    return html`
+      <div class="todo-list-container">
+        <div class="todo-title">
+          <h1>tasKs</h1>
+          <button
+            @click=${this.createTask}
+            ?disabled="${this.showCreateTaskForm}"
+          >
+            Crear tarea
+          </button>
+        </div>
+
+        <div
+          class="new-todo-form ${this.showCreateTaskForm
+            ? "visible"
+            : "hidden"}"
         >
-          Crear tarea
-        </button>
-      </div>
+          <new-todo-form
+            @new-task="${this.newTask}"
+            @cancel-create-task="${this.cancelCreateTask}"
+          ></new-todo-form>
+        </div>
 
-      <div
-        class="new-todo-form ${this.showCreateTaskForm ? "visible" : "hidden"}"
-      >
-        <new-todo-form
-          @new-task="${this.newTask}"
-          @cancel-create-task="${this.cancelCreateTask}"
-        ></new-todo-form>
+        <div class="tasks ${!this.showCreateTaskForm ? "visible" : "hidden"}">
+          ${tasksOrMessage} ${showCleanButton}
+        </div>
       </div>
-
-      <div class="tasks ${!this.showCreateTaskForm ? "visible" : "hidden"}">
-        ${tasksOrMessage}
-      </div>
-    </div>`;
+    `;
   }
 
+  cleanTasks(): void {
+    this.listItems = [];
+    this.saveToLocalStorage();
+  }
   createTask(): void {
     this.showCreateTaskForm = !this.showCreateTaskForm;
   }
