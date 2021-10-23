@@ -12,47 +12,62 @@ export class ToDoList extends LitElement {
   static styles = styles;
 
   @property({ attribute: false })
-  listItems: Task[] = [
-    {
-      completed: 0,
-      title: "hola",
-      description: "Asdf",
-      deadline: new Date(),
-      creation_date: new Date(),
-    },
-    {
-      completed: 1,
-      title: "hola",
-      description: "Asdf",
-      deadline: new Date(),
-      creation_date: new Date(),
-    },
-  ];
+  listItems: Task[] = [];
 
   @property({ type: Boolean })
   showCreateTaskForm = false;
 
-  render(): TemplateResult {
-    return html` <div class="todo-list-container">
-      <div class="todo-title">
-        <h1>tasKs</h1>
-        <button @click=${this.createTask}>Crear task</button>
-      </div>
-      <div class="new-todo-form" ?hidden="${!this.showCreateTaskForm}">
-        <new-todo-form></new-todo-form>
-      </div>
+  connectedCallback(): void {
+    super.connectedCallback();
 
-      <div class="tasks">
-        <ul>
+    this.getFromLocalStorage();
+  }
+
+  render(): TemplateResult {
+    const tasksOrMessage = html`${this.listItems.length > 0
+      ? html`<ul>
           ${this.listItems.map(
             (item) => html`<li><todo-item .item="${item}"></todo-item></li>`
           )}
-        </ul>
+        </ul>`
+      : html`<span class="empty-tasks">Aún no hay tareas...</span>`}`;
+    return html` <div class="todo-list-container">
+      <div class="todo-title">
+        <h1>tasKs</h1>
+        <button @click=${this.createTask}>Crear tarea</button>
+      </div>
+
+      <div
+        class="new-todo-form ${this.showCreateTaskForm ? "visible" : "hidden"}"
+      >
+        <new-todo-form @new-task="${this.newTask}"></new-todo-form>
+      </div>
+
+      <div class="tasks ${!this.showCreateTaskForm ? "visible" : "hidden"}">
+        ${tasksOrMessage}
       </div>
     </div>`;
   }
 
   createTask(): void {
     this.showCreateTaskForm = !this.showCreateTaskForm;
+  }
+  newTask(e: CustomEvent): void {
+    if (e.detail) {
+      this.listItems.push(e.detail);
+      this.showCreateTaskForm = false;
+      this.saveToLocalStorage();
+    }
+  }
+
+  saveToLocalStorage(): void {
+    localStorage.setItem("tasks", JSON.stringify(this.listItems));
+  }
+
+  getFromLocalStorage(): void {
+    const list = localStorage.getItem("tasks");
+    if (list) {
+      this.listItems = JSON.parse(list) as Task[];
+    }
   }
 }

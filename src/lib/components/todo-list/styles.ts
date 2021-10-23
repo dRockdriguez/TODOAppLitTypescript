@@ -18,7 +18,7 @@ export const styles = [
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      margin: 40px;
+      margin: 20px;
     }
     h1 {
       font-size: 50px;
@@ -57,6 +57,28 @@ export const styles = [
     button:hover {
       background-color: white;
       color: black;
+    }
+    .new-todo-form {
+      width: 100%;
+    }
+
+    .hidden {
+      visibility: hidden;
+      opacity: 0;
+      max-height: 0px;
+      transition: all 0.5s ease;
+    }
+
+    .visible {
+      visibility: visible;
+      padding: 20px;
+      opacity: 1;
+      max-height: fit-content;
+      transition: all 0.5s ease;
+    }
+    .empty-tasks {
+      font-size: 30px;
+      margin-top: 30px;
     }
   `,
 ];
