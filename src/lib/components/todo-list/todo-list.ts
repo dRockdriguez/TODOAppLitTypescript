@@ -34,13 +34,21 @@ export class ToDoList extends LitElement {
     return html` <div class="todo-list-container">
       <div class="todo-title">
         <h1>tasKs</h1>
-        <button @click=${this.createTask}>Crear tarea</button>
+        <button
+          @click=${this.createTask}
+          ?disabled="${this.showCreateTaskForm}"
+        >
+          Crear tarea
+        </button>
       </div>
 
       <div
         class="new-todo-form ${this.showCreateTaskForm ? "visible" : "hidden"}"
       >
-        <new-todo-form @new-task="${this.newTask}"></new-todo-form>
+        <new-todo-form
+          @new-task="${this.newTask}"
+          @cancel-create-task="${this.cancelCreateTask}"
+        ></new-todo-form>
       </div>
 
       <div class="tasks ${!this.showCreateTaskForm ? "visible" : "hidden"}">
@@ -52,14 +60,20 @@ export class ToDoList extends LitElement {
   createTask(): void {
     this.showCreateTaskForm = !this.showCreateTaskForm;
   }
+
   newTask(e: CustomEvent): void {
     if (e.detail) {
       this.listItems.push(e.detail);
       this.showCreateTaskForm = false;
       this.saveToLocalStorage();
+
+      // TODO ORDER BY DEADLINE DATE
     }
   }
 
+  cancelCreateTask(): void {
+    this.showCreateTaskForm = false;
+  }
   saveToLocalStorage(): void {
     localStorage.setItem("tasks", JSON.stringify(this.listItems));
   }

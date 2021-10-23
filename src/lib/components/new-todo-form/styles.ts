@@ -43,5 +43,8 @@ export const styles = [
       background-color: white;
       color: black;
     }
+    .cancel-btn {
+      background-color: #bb2124;
+    }
   `,
 ];
