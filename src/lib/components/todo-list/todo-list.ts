@@ -1,4 +1,5 @@
 import "../todo-item/todo-item.ts";
+import "../new-todo-form/new-todo-form";
 
 import { html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
@@ -36,6 +37,9 @@ export class ToDoList extends LitElement {
       <div class="todo-title">
         <h1>tasKs</h1>
         <button @click=${this.createTask}>Crear task</button>
+      </div>
+      <div class="new-todo-form" ?hidden="${!this.showCreateTaskForm}">
+        <new-todo-form></new-todo-form>
       </div>
 
       <div class="tasks">
