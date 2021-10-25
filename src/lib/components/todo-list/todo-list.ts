@@ -27,7 +27,13 @@ export class ToDoList extends LitElement {
     const tasksOrMessage = html`${this.listItems.length > 0
       ? html`<ul>
           ${this.listItems.map(
-            (item) => html`<li><todo-item .item="${item}"></todo-item></li>`
+            (item) =>
+              html`<li>
+                <todo-item
+                  .item="${item}"
+                  @new-status="${this.newStatus}"
+                ></todo-item>
+              </li>`
           )}
         </ul>`
       : html`<span class="empty-tasks">Aún no hay tareas...</span>`}`;
@@ -81,9 +87,22 @@ export class ToDoList extends LitElement {
       this.listItems.push(e.detail);
       this.showCreateTaskForm = false;
       this.saveToLocalStorage();
-
-      // TODO ORDER BY DEADLINE DATE
     }
+  }
+
+  newStatus(e: CustomEvent): void {
+    if (e.detail) {
+      // Change to find by id or something
+      this.listItems = this.listItems.filter(
+        (item) => item.creation_date !== e.detail.item.creation_date
+      );
+      this.listItems.push({
+        ...e.detail.item,
+        status: e.detail.newStatus,
+      });
+    }
+    this.saveToLocalStorage();
+    this.requestUpdate();
   }
 
   cancelCreateTask(): void {

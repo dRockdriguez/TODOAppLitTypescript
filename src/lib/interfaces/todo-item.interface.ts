@@ -1,9 +1,9 @@
 export interface Task {
   title: string;
   description: string;
-  completed: TaskStatus;
-  creation_date: Date;
-  deadline: Date;
+  status: TaskStatus;
+  creation_date: string;
+  deadline: string;
 }
 
 export enum TaskStatus {

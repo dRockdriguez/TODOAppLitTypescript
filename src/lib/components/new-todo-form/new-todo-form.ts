@@ -49,7 +49,6 @@ export class NewTodoForm extends LitElement {
       <div class="form-group">
         <label for="status">Estado</label>
         <select id="status" name="status">
-          <option value=""></option>
           <option value="0">Por hacer</option>
           <option value="1">En proceso</option>
           <option value="2">Hecha</option>
@@ -58,7 +57,12 @@ export class NewTodoForm extends LitElement {
       </div>
       <div class="form-group">
         <label for="deadline">Fecha de fin</label>
-        <input type="date" id="deadline" name="deadline" />
+        <input
+          type="date"
+          id="deadline"
+          name="deadline"
+          min="${new Date().toISOString().split("T")[0]}"
+        />
       </div>
 
       <button type="submit" @click=${this.createTask}>Crear tarea</button>
@@ -75,17 +79,18 @@ export class NewTodoForm extends LitElement {
     if (!errors) {
       const event = new CustomEvent("new-task", {
         detail: {
-          completed: 1,
+          status: Number(this.taskStatus.value),
           title: this.taskTitle.value,
           description: this.taskDescription.value,
-          deadline: this.taskDeadLine.value,
-          creation_date: new Date(),
+          deadline: new Date(this.taskDeadLine.value).toISOString(),
+          creation_date: new Date().toISOString(),
         },
       });
 
       this.taskTitle.value = "";
       this.taskDescription.value = "";
       this.taskDeadLine.value = "";
+      this.taskStatus.value = "";
       this.dispatchEvent(event);
     }
   }

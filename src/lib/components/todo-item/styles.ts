@@ -8,6 +8,14 @@ export const styles = [
     }
     ul li {
       list-style: none;
+      padding: 10px;
+    }
+    ul li span {
+      font-weight: bold;
+    }
+    ul li:last-child {
+      border: none;
+      float: right;
     }
     button {
       width: 100%;
@@ -18,9 +26,18 @@ export const styles = [
       color: white;
       cursor: pointer;
       z-index: 100;
-      display: block;
+      display: flex;
+      justify-content: space-between;
+      padding-left: 30px;
+      padding-right: 30px;
+      font-size: 20px;
+      align-items: center;
     }
     button:hover {
+      background-color: white;
+      color: black;
+    }
+    .active {
       background-color: white;
       color: black;
     }
@@ -39,6 +56,18 @@ export const styles = [
       opacity: 1;
       max-height: fit-content;
       transition: all 0.5s ease;
+    }
+    .form-group {
+      display: flex;
+      flex-flow: column wrap;
+    }
+    label {
+      margin-bottom: 5px;
+    }
+    select {
+      border-radius: 5px;
+      border: 0px;
+      padding: 10px;
     }
   `,
 ];
